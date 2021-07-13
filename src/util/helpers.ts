@@ -24,3 +24,4 @@ export const looseBoolean2Boolean = (falsyBoolean: 'true' | 'false' | unknown): 
   }
   return falsyBoolean;
 };
+

@@ -37,8 +37,18 @@ export interface AppRouteProps extends BaseConfig {
   cssLoading?: boolean;
   rootId?: string;
   component?: React.ReactElement;
+  /**
+   * will be deprecated in future version, use funcational `activePath` instead.
+   * @see activePath
+   * @deprecated
+   */
   basename?: string;
   render?: (componentProps: AppRouteComponentProps) => React.ReactElement;
+  /**
+   * will be deprecated in future version, use `activePath` instead.
+   * @see activePath
+   * @deprecated
+   */
   path?: string | string[] | PathData[];
   onAppEnter?: (appConfig: CompatibleAppConfig) => void;
   onAppLeave?: (appConfig: CompatibleAppConfig) => void;
@@ -60,6 +70,11 @@ function genCompatibleAppConfig (appRouteProps: AppRouteProps): CompatibleAppCon
   });
 
   return appConfig;
+}
+
+function path2ActivePath (appConfig: CompatibleAppConfig) {
+  const { path, activePath } = appConfig;
+  return path || activePath;
 }
 
 export default class AppRoute extends React.Component<AppRouteProps, AppRouteState> {

@@ -9,6 +9,7 @@ import start, { unload, Fetch, defaultFetch, Prefetch } from './start';
 import { matchActivePath, PathData, addLeadingSlash } from './util/matchPath';
 import { AppConfig } from './apps';
 import { doPrefetch } from './util/prefetch';
+import checkActive from './util/checkActive';
 
 type RouteType = 'pushState' | 'replaceState';
 
@@ -24,6 +25,9 @@ export interface AppRouterProps {
   NotFoundComponent?: React.ComponentType | React.ReactElement;
   onAppEnter?: (appConfig: CompatibleAppConfig) => void;
   onAppLeave?: (appConfig: CompatibleAppConfig) => void;
+  onLoadingApp?: (appConfig: CompatibleAppConfig) => void;
+  onFinishLoading?:  (appConfig: CompatibleAppConfig) => void;
+  onError?: (err: Error) => void;
   shouldAssetsRemove?: (
     assetUrl?: string,
     element?: HTMLElement | HTMLLinkElement | HTMLStyleElement | HTMLScriptElement,
@@ -68,6 +72,9 @@ export default class AppRouter extends React.Component<AppRouterProps, AppRouter
     shouldAssetsRemove: () => true,
     onAppEnter: () => {},
     onAppLeave: () => {},
+    onLoadingApp: () => {},
+    onFinishLoading: () => {},
+    onError: () => {},
     basename: '',
     fetch: defaultFetch,
     prefetch: false,
@@ -155,6 +162,7 @@ export default class AppRouter extends React.Component<AppRouterProps, AppRouter
     // if AppRouter is unmounted, cancel all operations
     if (this.unmounted) return;
 
+    this.props.onError(err);
     this.err = err;
     this.setState({ url: ICESTSRK_ERROR });
   };
@@ -178,11 +186,13 @@ export default class AppRouter extends React.Component<AppRouterProps, AppRouter
 
   loadingApp = (app: AppConfig) => {
     if (this.unmounted) return;
+    this.props.onLoadingApp(app);
     this.setState({ appLoading: app.name });
   }
 
   finishLoading = (app: AppConfig) => {
     if (this.unmounted) return;
+    this.props.onFinishLoading(app);
     const { appLoading } = this.state;
     if (appLoading === app.name) {
       this.setState({ appLoading: '' });
@@ -212,18 +222,24 @@ export default class AppRouter extends React.Component<AppRouterProps, AppRouter
 
     let match = null;
     let element: React.ReactElement;
-    let routerPath = null;
+    // let routerPath = null;
     React.Children.forEach(children, child => {
       if (match == null && React.isValidElement(child)) {
-        const { path } = child.props;
-        routerPath = appBasename
-          ? [].concat(path).map((pathStr: string | PathData) => `${addLeadingSlash(appBasename)}${(pathStr as PathData).value || pathStr}`)
-          : path;
+        const { path, activePath, exact, strict, sensitive, hashType } = child.props;
+        // routerPath = appBasename
+        //   ? [].concat(path).map((pathStr: string | PathData) => `${addLeadingSlash(appBasename)}${(pathStr as PathData).value || pathStr}`)
+        //   : path;
         element = child;
-        match = matchActivePath(url, {
-          ...child.props,
-          path: routerPath,
-        });
+        // match = matchActivePath(url, {
+        //   ...child.props,
+        //   path: routerPath,
+        // });
+        match = checkActive({
+          exact,
+          strict,
+          sensitive,
+          hashType,
+        }, activePath)(url);
       }
     });
 

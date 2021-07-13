@@ -37,6 +37,7 @@ export interface ModuleLifeCycle {
 export interface BaseConfig extends PathOptions {
   name?: string;
   url?: string | string[];
+  activePath?: string | string[] | PathData[] | MatchOptions[] | ActiveFn;
   container?: HTMLElement;
   status?: string;
   sandbox?: boolean | SandboxProps | SandboxConstructor;
@@ -74,7 +75,6 @@ interface AppLifecylceOptions {
 }
 
 export interface AppConfig extends BaseConfig {
-  activePath?: string | string[] | PathData[] | MatchOptions[] | ActiveFn;
   appLifecycle?: AppLifecylceOptions;
   appSandbox?: Sandbox;
 }
