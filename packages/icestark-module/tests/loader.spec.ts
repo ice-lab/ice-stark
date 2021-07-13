@@ -28,19 +28,19 @@ describe('module loader', () => {
       name: 'test',
     });
     const res = await task;
-    expect(res).toEqual(['//localhost']);
+    expect(res).toEqual(['//localhost \n //# sourceURL=//localhost']);
   });
 
   test('load cache', async () => {
     const task = moduleLoader.load({ name: 'test', url: '//localhost2' });
     const res = await task;
-    expect(res).toEqual(['//localhost']);
+    expect(res).toEqual(['//localhost \n //# sourceURL=//localhost']);
   });
 
   test('load source', async () => {
     const task = moduleLoader.load({ name: 'testsource', url: '//source' });
     const res = await task;
-    expect(res).toEqual([source.toString()]);
+    expect(res).toEqual([`${source.toString()} \n //# sourceURL=//source`]);
   });
 
   test('execute module', async () => {

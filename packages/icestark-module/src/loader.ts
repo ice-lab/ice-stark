@@ -23,7 +23,13 @@ export default class ModuleLoader {
     }
     const urls = Array.isArray(url) ? url : [url];
 
-    const task = Promise.all(urls.map((scriptUrl) => fetch(scriptUrl).then((res) => res.text())));
+    const task = Promise.all(
+      urls.map(
+        (scriptUrl) => fetch(scriptUrl)
+          .then((res) => res.text())
+          .then(res => `${res} \n //# sourceURL=${scriptUrl}`)
+      )
+    );
     this.importTask[name] = task;
     return task;
   }

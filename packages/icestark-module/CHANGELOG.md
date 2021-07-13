@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+
+- [feat] append sourceURL to js resources to make sourcemaps work.
+
 ## 1.4.1
 
 - [refact] compatible with sandbox spell error.
