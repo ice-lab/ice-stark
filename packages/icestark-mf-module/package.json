@@ -1,0 +1,50 @@
+{
+  "name": "@ice/stark-mf-module",
+  "version": "0.1.0",
+  "description": "toolkit for load standard micro-module",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf lib && tsc",
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "NODE_ENV=unittest jest",
+    "coverage": "codecov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ice-lab/icestark.git"
+  },
+  "files": [
+    "lib",
+    "es"
+  ],
+  "keywords": [
+    "modules",
+    "icestark",
+    "module ferderation"
+  ],
+  "author": "maoxiaoke@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ice-lab/icestark/issues"
+  },
+  "homepage": "https://github.com/ice-lab/icestark#readme",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.3",
+    "codecov": "^3.4.0",
+    "jest": "^25.2.7",
+    "ts-jest": "^25.3.1",
+    "typescript": "^3.8.3"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "preset": "ts-jest"
+  }
+}
