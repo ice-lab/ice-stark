@@ -1,6 +1,6 @@
 {
   "name": "@ice/stark",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Icestark is a JavaScript library for multiple projects, Ice workbench solution.",
   "scripts": {
     "install:deps": "rm -rf node_modules && rm -rf ./packages/*/node_modules && yarn install && lerna exec -- npm install",
